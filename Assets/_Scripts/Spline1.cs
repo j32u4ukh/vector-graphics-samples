@@ -18,7 +18,14 @@ public class Spline1 : MonoBehaviour
     {
         // Prepare the vector path, add it to the vector scene.
         m_Path = new Shape() {
-            Contours = new BezierContour[]{ new BezierContour() { Segments = new BezierPathSegment[2] } },
+            Contours = new BezierContour[]{
+                new BezierContour() {
+                    Segments = new BezierPathSegment[2]
+                },
+                new BezierContour() {
+                    Segments = new BezierPathSegment[2]
+                }
+            },
             PathProps = new PathProperties() {
                 Stroke = new Stroke() { Color = Color.white, HalfThickness = 0.1f }
             }
@@ -43,13 +50,22 @@ public class Spline1 : MonoBehaviour
     void Update()
     {
         if (m_Scene == null)
+        {
             Start();
+        }
 
         // Update the control points of the spline.
+        // line 1
         m_Path.Contours[0].Segments[0].P0 = (Vector2)controlPoints[0].localPosition;
         m_Path.Contours[0].Segments[0].P1 = (Vector2)controlPoints[1].localPosition;
         m_Path.Contours[0].Segments[0].P2 = (Vector2)controlPoints[2].localPosition;
         m_Path.Contours[0].Segments[1].P0 = (Vector2)controlPoints[3].localPosition;
+
+        // line 2
+        m_Path.Contours[1].Segments[0].P0 = (Vector2)controlPoints[4].localPosition;
+        m_Path.Contours[1].Segments[0].P1 = (Vector2)controlPoints[4].localPosition;
+        m_Path.Contours[1].Segments[0].P2 = (Vector2)controlPoints[4].localPosition;
+        m_Path.Contours[1].Segments[1].P0 = (Vector2)controlPoints[5].localPosition;
 
         // Tessellate the vector scene, and fill the mesh with the resulting geometry.
         var geoms = VectorUtils.TessellateScene(m_Scene, m_Options);
